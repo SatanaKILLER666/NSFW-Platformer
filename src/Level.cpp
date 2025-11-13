@@ -1,12 +1,13 @@
 #include "Level.h"
 #include "Player.h"
+#include "Physics.h"
 #include <fstream>
 #include <sstream>
 #include <iostream>
 
 Level::Level() 
     : mCompleted(false)
-    , mStartPosition(100.f, 100.f) {
+    , mStartPosition(100.f, 500.f) {
 }
 
 bool Level::loadFromFile(const std::string& filename) {
@@ -75,8 +76,8 @@ void Level::update(sf::Time deltaTime, Player& player) {
 void Level::draw(sf::RenderWindow& window) const {
     for (const auto& platform : mPlatforms) {
         sf::RectangleShape shape;
-        shape.setPosition(platform.bounds.position);  // Исправлено
-        shape.setSize(platform.bounds.size);          // Исправлено
+        shape.setPosition(platform.bounds.position);
+        shape.setSize(platform.bounds.size);
         shape.setFillColor(platform.color);
         window.draw(shape);
     }
@@ -84,16 +85,29 @@ void Level::draw(sf::RenderWindow& window) const {
 
 void Level::checkCollisions(Player& player) {
     sf::Rect<float> playerBounds = player.getGlobalBounds();
+    bool onGround = false;
     
     for (const auto& platform : mPlatforms) {
-        if (playerBounds.findIntersection(platform.bounds).has_value()) {
+        Physics::CollisionResult collision = Physics::checkCollision(playerBounds, platform.bounds);
+        
+        if (collision.collision) {
             if (platform.isDeadly) {
                 player.takeDamage(25);
             } else if (platform.isGoal) {
                 mCompleted = true;
+            } else {
+                // Применяем коррекцию позиции
+                player.applyCorrection(collision.correction);
+                
+                // Обновляем состояние "на земле"
+                if (collision.fromBottom) {
+                    onGround = true;
+                }
             }
         }
     }
+    
+    player.setOnGround(onGround);
 }
 
 bool Level::isCompleted() const {

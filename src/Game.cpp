@@ -8,8 +8,8 @@ Game::Game()
     , mCurrentLevel(0)
     , mIsPaused(false)
     , mGameOver(false)
-    , mHealthText(sf::Text(mFont, "Health: 100", 24))  // Явная инициализация
-    , mLevelText(sf::Text(mFont, "Health: 100", 24))   // Явная инициализация
+    , mHealthText(sf::Text(mFont, "Health: 100", 24))
+    , mLevelText(sf::Text(mFont, "Health: 100", 24))
 {
     
     mWindow.setFramerateLimit(60);
@@ -159,24 +159,24 @@ void Game::loadTextures() {
 void Game::loadLevels() {
     mLevels.clear();
     
-    // Level 1
+    // Level 1 - персонаж спавнится НА платформе
     Level level1;
-    level1.addPlatform(sf::Rect<float>({0, 700}, {1024, 68}));
-    level1.addPlatform(sf::Rect<float>({200, 600}, {100, 20}));
-    level1.addPlatform(sf::Rect<float>({400, 500}, {100, 20}));
-    level1.addPlatform(sf::Rect<float>({600, 400}, {100, 20}));
-    level1.setStartPosition({100, 650});
-    level1.setGoal(sf::Rect<float>({900, 350}, {50, 50}));
+    level1.addPlatform(sf::Rect<float>({0, 700}, {1024, 68})); // Пол
+    level1.addPlatform(sf::Rect<float>({100, 600}, {200, 20})); // Стартовая платформа
+    level1.addPlatform(sf::Rect<float>({400, 550}, {100, 20}));
+    level1.addPlatform(sf::Rect<float>({600, 500}, {100, 20}));
+    level1.setStartPosition({150, 550}); // Спавн НА платформе
+    level1.setGoal(sf::Rect<float>({800, 450}, {50, 50}));
     mLevels.push_back(level1);
     
     // Level 2
     Level level2;
     level2.addPlatform(sf::Rect<float>({0, 700}, {1024, 68}));
-    level2.addPlatform(sf::Rect<float>({100, 600}, {100, 20}));
-    level2.addPlatform(sf::Rect<float>({300, 500}, {100, 20}));
-    level2.addPlatform(sf::Rect<float>({500, 400}, {100, 20}));
-    level2.addPlatform(sf::Rect<float>({700, 500}, {100, 20}));
-    level2.setStartPosition({100, 650});
+    level2.addPlatform(sf::Rect<float>({100, 600}, {200, 20}));
+    level2.addPlatform(sf::Rect<float>({350, 550}, {100, 20}));
+    level2.addPlatform(sf::Rect<float>({550, 500}, {100, 20}));
+    level2.addPlatform(sf::Rect<float>({750, 550}, {100, 20}));
+    level2.setStartPosition({150, 550});
     level2.setGoal(sf::Rect<float>({800, 450}, {50, 50}));
     mLevels.push_back(level2);
     

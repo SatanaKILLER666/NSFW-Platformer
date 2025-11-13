@@ -3,7 +3,6 @@
 
 Player::Player() 
     : mVelocity(0.f, 0.f)
-    , mAcceleration(0.f, 0.f)
     , mHealth(100)
     , mMaxHealth(100)
     , mIsOnGround(false)
@@ -16,33 +15,23 @@ Player::Player()
 }
 
 void Player::update(sf::Time deltaTime) {
-    mAcceleration.x = 0.f;
-    
-    if (mIsMovingLeft) {
-        mAcceleration.x = -MOVE_ACCELERATION;
-    } else if (mIsMovingRight) {
-        mAcceleration.x = MOVE_ACCELERATION;
-    }
-    
-    mAcceleration.y = GRAVITY;
-    applyPhysics(deltaTime);
-}
-
-void Player::applyPhysics(sf::Time deltaTime) {
     float delta = deltaTime.asSeconds();
     
-    mVelocity += mAcceleration * delta;
-    
-    if (mIsOnGround && mAcceleration.x == 0.f) {
-        mVelocity.x *= FRICTION;
+    // Применяем гравитацию
+    if (!mIsOnGround) {
+        mVelocity.y += GRAVITY * delta;
     }
     
-    if (std::abs(mVelocity.x) > MAX_SPEED) {
-        mVelocity.x = (mVelocity.x > 0) ? MAX_SPEED : -MAX_SPEED;
+    // Применяем движение
+    mVelocity.x = 0.f;
+    if (mIsMovingLeft) {
+        mVelocity.x = -MOVE_SPEED;
+    } else if (mIsMovingRight) {
+        mVelocity.x = MOVE_SPEED;
     }
     
+    // Обновляем позицию
     mShape.move(mVelocity * delta);
-    mIsOnGround = false;
 }
 
 void Player::draw(sf::RenderWindow& window) const {
@@ -80,6 +69,7 @@ void Player::takeDamage(int damage) {
 void Player::heal(int amount) {
     mHealth += amount;
     if (mHealth > mMaxHealth) mHealth = mMaxHealth;
+    mShape.setFillColor(sf::Color::Blue);
 }
 
 bool Player::isDead() const {
@@ -94,6 +84,7 @@ void Player::reset() {
     mHealth = mMaxHealth;
     mVelocity = {0.f, 0.f};
     mShape.setFillColor(sf::Color::Blue);
+    mIsOnGround = false;
 }
 
 sf::Rect<float> Player::getGlobalBounds() const {
@@ -106,4 +97,19 @@ sf::Vector2f Player::getPosition() const {
 
 void Player::setPosition(sf::Vector2f position) {
     mShape.setPosition(position);
+}
+
+void Player::setOnGround(bool onGround) {
+    mIsOnGround = onGround;
+    if (mIsOnGround) {
+        mVelocity.y = 0.f;
+    }
+}
+
+bool Player::isOnGround() const {
+    return mIsOnGround;
+}
+
+void Player::applyCorrection(const sf::Vector2f& correction) {
+    mShape.move(correction);
 }

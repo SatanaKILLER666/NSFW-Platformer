@@ -24,12 +24,13 @@ public:
     sf::Vector2f getPosition() const;
     void setPosition(sf::Vector2f position);
     
-private:
-    void applyPhysics(sf::Time deltaTime);
+    void setOnGround(bool onGround);
+    bool isOnGround() const;
+    void applyCorrection(const sf::Vector2f& correction);
     
+private:
     sf::RectangleShape mShape;
     sf::Vector2f mVelocity;
-    sf::Vector2f mAcceleration;
     
     int mHealth;
     int mMaxHealth;
@@ -38,9 +39,7 @@ private:
     bool mIsMovingLeft;
     bool mIsMovingRight;
     
-    static constexpr float GRAVITY = 980.f;
-    static constexpr float MOVE_ACCELERATION = 800.f;
-    static constexpr float JUMP_FORCE = -450.f;
-    static constexpr float FRICTION = 0.85f;
-    static constexpr float MAX_SPEED = 300.f;
+    static constexpr float GRAVITY = 500.f;
+    static constexpr float MOVE_SPEED = 200.f;
+    static constexpr float JUMP_FORCE = -350.f;
 };
