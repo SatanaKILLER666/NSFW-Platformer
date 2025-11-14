@@ -18,6 +18,7 @@ private:
     void handleInput();
     void loadTextures();
     void loadLevels();
+    
 
     sf::RenderWindow mWindow;
     std::unique_ptr<Player> mPlayer;
@@ -27,9 +28,14 @@ private:
     sf::Font mFont;
     sf::Text mHealthText;
     sf::Text mLevelText;
+
+    sf::Texture mBackgroundTexture;
+
+    std::unique_ptr<sf::Sprite> mBackground; 
     
     bool mIsPaused;
     bool mGameOver;
+    bool mGameWon;
     
     static const sf::Time TimePerFrame;
 };

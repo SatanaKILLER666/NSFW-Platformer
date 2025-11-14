@@ -18,6 +18,7 @@ public:
     sf::Vector2f getStartPosition() const;
     
     void addPlatform(const sf::Rect<float>& bounds);
+    void addSpike(const sf::Rect<float>& bounds);
     void setStartPosition(const sf::Vector2f& position);
     void setGoal(const sf::Rect<float>& goalBounds);
     

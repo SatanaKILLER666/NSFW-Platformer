@@ -96,10 +96,10 @@ void Level::checkCollisions(Player& player) {
             } else if (platform.isGoal) {
                 mCompleted = true;
             } else {
-                // Применяем коррекцию позиции
+
                 player.applyCorrection(collision.correction);
                 
-                // Обновляем состояние "на земле"
+
                 if (collision.fromBottom) {
                     onGround = true;
                 }
@@ -125,6 +125,16 @@ void Level::addPlatform(const sf::Rect<float>& bounds) {
     platform.isDeadly = false;
     platform.isGoal = false;
     mPlatforms.push_back(platform);
+}
+
+
+void Level::addSpike(const sf::Rect<float>& bounds) {
+    Platform spike;
+    spike.bounds = bounds;
+    spike.color = sf::Color::Red;
+    spike.isDeadly = true;
+    spike.isGoal = false;
+    mPlatforms.push_back(spike);
 }
 
 void Level::setStartPosition(const sf::Vector2f& position) {

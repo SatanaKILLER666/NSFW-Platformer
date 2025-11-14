@@ -17,12 +17,22 @@ Player::Player()
 void Player::update(sf::Time deltaTime) {
     float delta = deltaTime.asSeconds();
     
-    // Применяем гравитацию
+
+    static sf::Time damageTimer = sf::Time::Zero;
+    if (mShape.getFillColor() == sf::Color::Red) {
+        damageTimer += deltaTime;
+        if (damageTimer > sf::seconds(0.3f)) {
+            mShape.setFillColor(sf::Color::Blue);
+            damageTimer = sf::Time::Zero;
+        }
+    }
+    
+
     if (!mIsOnGround) {
         mVelocity.y += GRAVITY * delta;
     }
     
-    // Применяем движение
+
     mVelocity.x = 0.f;
     if (mIsMovingLeft) {
         mVelocity.x = -MOVE_SPEED;
@@ -30,7 +40,7 @@ void Player::update(sf::Time deltaTime) {
         mVelocity.x = MOVE_SPEED;
     }
     
-    // Обновляем позицию
+
     mShape.move(mVelocity * delta);
 }
 
@@ -63,7 +73,15 @@ void Player::jump() {
 void Player::takeDamage(int damage) {
     mHealth -= damage;
     if (mHealth < 0) mHealth = 0;
+    
+
     mShape.setFillColor(sf::Color::Red);
+    
+
+    mVelocity.y = -150.f;
+    mIsOnGround = false;
+    
+    std::cout << "Player took " << damage << " damage! Health: " << mHealth << std::endl;
 }
 
 void Player::heal(int amount) {
@@ -113,3 +131,7 @@ bool Player::isOnGround() const {
 void Player::applyCorrection(const sf::Vector2f& correction) {
     mShape.move(correction);
 }
+
+static constexpr float GRAVITY = 600.f;
+static constexpr float MOVE_SPEED = 180.f;
+static constexpr float JUMP_FORCE = -380.f;
