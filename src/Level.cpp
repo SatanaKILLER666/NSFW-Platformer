@@ -114,6 +114,10 @@ bool Level::isCompleted() const {
     return mCompleted;
 }
 
+void Level::reset() {
+    mCompleted = false;
+}
+
 sf::Vector2f Level::getStartPosition() const {
     return mStartPosition;
 }

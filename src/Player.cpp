@@ -103,6 +103,15 @@ void Player::reset() {
     mVelocity = {0.f, 0.f};
     mShape.setFillColor(sf::Color::Blue);
     mIsOnGround = false;
+    mIsMovingLeft = false;
+    mIsMovingRight = false;
+}
+
+void Player::resetPhysics() {
+    mVelocity = {0.f, 0.f};
+    mIsOnGround = false;
+    mIsMovingLeft = false;
+    mIsMovingRight = false;
 }
 
 sf::Rect<float> Player::getGlobalBounds() const {

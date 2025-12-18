@@ -19,6 +19,10 @@ public:
     bool isDead() const;
     int getHealth() const;
     void reset();
+
+
+    
+    void resetPhysics();
     
     sf::Rect<float> getGlobalBounds() const;
     sf::Vector2f getPosition() const;

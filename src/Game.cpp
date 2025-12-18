@@ -73,6 +73,10 @@ void Game::processEvents() {
 
                 mGameOver = false;
                 mCurrentLevel = 0;
+                
+                for (auto& lvl : mLevels) {
+                    lvl.reset();
+                }
                 if (mPlayer) {
                     mPlayer->reset();
                     if (mCurrentLevel < mLevels.size()) {
@@ -96,9 +100,16 @@ void Game::update(sf::Time deltaTime) {
             
 
             if (mLevels[mCurrentLevel].isCompleted()) {
+    
                 mCurrentLevel++;
+
+      
                 if (mCurrentLevel >= mLevels.size()) {
-                    mGameOver = true; 
+                    mGameOver = true;
+                } else {
+             
+
+                    mPlayer->resetPhysics();
                     mPlayer->setPosition(mLevels[mCurrentLevel].getStartPosition());
                 }
             }
@@ -271,7 +282,7 @@ void Game::loadLevels() {
     level2.setGoal(sf::Rect<float>({800, 450}, {50, 50}));
     mLevels.push_back(level2);
     
-    // 3 уровень - АДСКИЙ УРОВЕНЬ!!!1! 😈
+    // 3 уровень - АДСКИЙ ХАРДКОРИЩЕ!!! 😈
     Level level3;
     
     level3.addPlatform(sf::Rect<float>({0, 700}, {100, 68}));

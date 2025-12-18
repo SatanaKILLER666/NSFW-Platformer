@@ -15,6 +15,7 @@ public:
     void draw(sf::RenderWindow& window) const;
     
     bool isCompleted() const;
+    void reset();
     sf::Vector2f getStartPosition() const;
     
     void addPlatform(const sf::Rect<float>& bounds);
